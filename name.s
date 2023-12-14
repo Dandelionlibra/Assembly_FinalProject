@@ -25,11 +25,15 @@ strset:                     @ Array
     .word   name1
     .word   name2
     .word   name3
+    .word   msg3
 
     .globl  msg2
     .globl  msg3
     .globl  msg4
     .globl  strset
+    .globl  name1
+    .globl  name2
+    .globl  name3
 
 .text
     .globl  name
@@ -65,6 +69,6 @@ loop:
 
 
 
-	mov		r0, #0				@ move return value into r0
+	ldr		r0, =strset				@ move return value into r0
 	ldmfd	sp!, {lr}           @ pop return address from stack
 	mov		pc, lr              @ return from name

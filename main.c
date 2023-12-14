@@ -26,6 +26,9 @@
  
 *************************************************************/
 
+char **name();
+int *id();
+void drawJuliaSet( int cX, int cY, int width, int height, int16_t (*frame)[FRAME_WIDTH] );
 
 int main()
 {
@@ -45,24 +48,34 @@ int main()
 	printf( "Function1: Name\n" );
 
 	//Dummy Function. Please refer to the specification of Project 1.
-	name();
+	char **strset = name();
 	
 	printf( "Function2: ID\n" );
 	
 	//Dummy Function. Please refer to the specification of Project 1.
-	id();
+    int *idlist;
+	idlist = id();
 
 	//Dummy printout. Please refer to the specification of Project 1. 
-	printf( "Main Function:\n" );
+	/*printf( "Main Function:\n" );
 	printf( "*****Print All*****\n" );
 	printf( "Team 01\n" );
 	printf( "10027001   Peter Huang\n" );
 	printf( "10027002   Mary Sue\n" );
 	printf( "10027003   Tom Smith\n" );
 	printf( "ID Summation = 30081006\n" );
-	printf( "*****End Print*****\n" );
+	printf( "*****End Print*****\n" );*/
+    printf( "Main Function:\n" );   
+    printf( "*****Print All*****\n" );
+    printf( strset[3]+4 );  // Team 17
+    int i = 0;
+    for( i=0; i<3; i++){
+        printf( "%d ", idlist[i] );  // member i
+        printf( strset[i] );
+    }
+    printf( "ID Summation = %d\n", idlist[-1] );
+    printf( "*****End Print*****\n" );
 
-	
 	printf( "\n***** Please enter p to draw Julia Set animation *****\n" );
 	// 等待使用者輸入正確指令
 	while(getchar()!='p') {}
@@ -89,15 +102,17 @@ int main()
 			// 移動檔案操作位置至最前端，以便下一次的畫面重新寫入
 			lseek( fd, 0, SEEK_SET );
 		}
-
+        system( "clear" );
 
 		//Dummy printout. Please refer to the specification of Project 1. 
 		
 		printf( ".*.*.*.<:: Happy New Year ::>.*.*.*.\n" );
-		printf( "by Team 01\n" );
-		printf( "10027001   Peter Huang\n" );
-		printf( "10027002   Mary Sue\n" );
-		printf( "10027003   Tom Smith\n" );
+		printf( "by " );
+        printf( strset[3]+4 );  // Team 17
+		for( i=0; i<3; i++){
+            printf( "%d ", idlist[i] );  // member i
+            printf( strset[i] );
+        }
 		
 		// 關閉 Device Node檔案，結束驅動程式的使用
 		close( fd );
@@ -105,6 +120,7 @@ int main()
 
 	// 等待使用者輸入正確指令
 	while(getchar()!='p') {}
+
 
 	return 0;
 }

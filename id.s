@@ -52,6 +52,10 @@ idmsg7:
 .align 4
 idmsg8:
     .asciz	"*****End Print*****\n"
+.align 4
+endl:
+    .asciz   "\n"
+	.align 4
 
     .globl	summation
     .globl	fmtstr
@@ -176,6 +180,6 @@ loop3:
     ldr     r0, =idmsg8		@ r0 = *idmsg8
     bl      printf			@ printf("*****End Print*****\n")
 
-	mov     r0, #0			@ move return value into r0
+	ldr     r0, =idlist			@ move return value into r0
 	ldmfd   sp!, {lr}		@ pop return address from stack
 	mov     pc, lr			@ return from name
