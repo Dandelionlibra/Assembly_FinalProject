@@ -13,20 +13,32 @@ drawJuliaSet:
     movs    r4, #0                  @ (Operand2)
     moveq   r5, sp                  @ (Conditional execution)
     movne   r4, #0                  @ (Conditional execution)
-    orr     sp, lr, r1              @ !!!! the tenth instruction
+    orr     sp, lr, r1              @ !!!!!!!!!!! the tenth instruction
     mov     sp, r5
 
 @---------------------- start ----------------------
-    str     lr, [sp, #-4]!           @ push old lr to stack
-    str     fp, [sp, #-4]!           @ push old fp to stack
+    stmfd   sp!, {fp, lr}           @ push fp and lr to stack
     add     fp, sp, #0              @ fp = sp
-    sub     sp, sp, #44             @ allocate 44 bytes on stack for local variables
-    str     r3, [fp, #-4]           @ push r3 to stack, fp-4 = height
-    str     r2, [fp, #-8]          @ push r2 to stack, fp-8 = width
-    str     r1, [fp, #-12]          @ push r1 to stack, fp-12 = cY
-    str     r0, [fp, #-16]          @ push r0 to stack, fp-16 = cX
-    @ fp+4 = lr
+    stmfd    sp!, {r0-r3}            @ push r0-r3 to stack
+    @sub     sp, sp, #44             @ allocate 44 bytes on stack for local variables
+    mov     r3, #1
+    sub     sp, sp, r3, lsl #5      @ allocate 32 bytes on stack for local variables
+    sub     sp, sp, r3, lsl #3      @ allocate 8 bytes on stack for local variables
+    sub     sp, sp, r3, lsl #2      @ allocate 4 bytes on stack for local variables
+    
     @ fp+8 = frameBuffer
+    @ fp+4 = lr
+    @ fp-4 = height
+    @ fp-8 = width
+    @ fp-12 = cY
+    @ fp-16 = cX
+    @ fp-20 = x
+    @ fp-24 = y
+    @ fp-28 = zx
+    @ fp-32 = zy
+    @ fp-36 = i
+    @ fp-40 = tmp
+    
 
 
     mov     r5, #0                  @ r5 = 0
@@ -158,9 +170,10 @@ finish_outer_loop:
 	
     mov		r0, #0		@ move return value into r0
 	add     sp, fp, #0              @ deallocate local variables
-    ldr     fp, [sp], #4            @ pop old fp from stack
-    ldr     lr, [sp], #4            @ pop old lr from stack
-	bx      lr		@ return to caller
+    @ldr     fp, [sp], #4            @ pop old fp from stack
+    @ldr     lr, [sp], #4            @ pop old lr from stack
+    ldmfd   sp!, {fp, lr}           @ pop fp and lr from stack
+	mov     pc, lr		@ return to caller
     .align  4
 
 
